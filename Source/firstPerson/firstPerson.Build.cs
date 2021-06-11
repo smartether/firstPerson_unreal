@@ -10,7 +10,7 @@ public class firstPerson : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RenderCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "Core" , "CoreUObject", "Engine", "RenderCore", "TraceLog", "AssetRegistry"});
+		PrivateDependencyModuleNames.AddRange(new string[] { "Core" , "CoreUObject", "Engine", "RenderCore", "TraceLog", "AssetRegistry", "PakFile"});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

@@ -4,3 +4,7 @@
 
 #include "CoreMinimal.h"
 
+class firstPerson : FDefaultGameModuleImpl {
+
+	virtual void StartupModule();
+};
