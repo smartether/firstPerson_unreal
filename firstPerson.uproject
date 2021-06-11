@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{7AA69BA8-4FED-F6CF-C5DE-879D9F85359A}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "firstPerson",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	]
+}
