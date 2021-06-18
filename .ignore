@@ -1,0 +1,10 @@
+.git
+.idea
+.vs
+.vscode
+cmake-build-debug
+Content
+DerivedDataCache
+Intermediate
+Saved
+Script

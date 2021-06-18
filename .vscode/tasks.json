@@ -1,0 +1,1679 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "firstPerson Win32 Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win32 Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win32 DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win32 Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Shipping Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Shipping Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win32 Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Shipping Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Test Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Test Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win32 Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win32 Test Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win32",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win64 Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win64 DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win64 Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Shipping Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Shipping Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win64 Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Shipping Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Test Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Test Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Win64 Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Win64 Test Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Win64",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson HoloLens Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson HoloLens DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson HoloLens Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Shipping Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Shipping Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson HoloLens Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Shipping Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Test Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Test Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson HoloLens Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson HoloLens Test Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"HoloLens",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Mac Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Mac DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Mac Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Shipping Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Shipping Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Mac Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Shipping Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Test Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Test Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Mac Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Mac Test Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Mac",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Android Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Android DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Android Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Shipping Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Shipping Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Android Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Shipping Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Shipping",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Test Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Test Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPerson Android Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPerson Android Test Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPerson",
+				"Android",
+				"Test",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPersonEditor Win64 Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPersonEditor Win64 DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPersonEditor Win64 Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Win64 Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPersonEditor",
+				"Win64",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac Debug Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac Debug Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPersonEditor Mac Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac Debug Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"Debug",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac DebugGame Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPersonEditor Mac DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac DebugGame Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"DebugGame",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac Development Build",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac Development Rebuild",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Build.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"firstPersonEditor Mac Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		},
+		{
+			"label": "firstPersonEditor Mac Development Clean",
+			"group": "build",
+			"command": "Engine\\Build\\BatchFiles\\Clean.bat",
+			"args": [
+				"firstPersonEditor",
+				"Mac",
+				"Development",
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "F:\\Source\\UnrealEngine"
+			}
+		}
+	]
+}

@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 
-class firstPerson : FDefaultGameModuleImpl {
 
+DECLARE_LOG_CATEGORY_EXTERN(FirstPersonLog, Log, All)
+
+class firstPerson : FDefaultGameModuleImpl {
+public:
 	virtual void StartupModule();
 };

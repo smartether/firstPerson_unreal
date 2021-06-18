@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "firstPersonEditor Editor Win64 Development (firstPerson)",
+            "intelliSenseMode": "msvc-x64",
+            "compileCommands": "F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_firstPerson.json",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        },
+        {
+            "name": "Win32",
+            "intelliSenseMode": "msvc-x64",
+            "compileCommands": "F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_Default.json",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

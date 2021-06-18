@@ -1,0 +1,27 @@
+[
+	{
+		"file": "F:\\\\Projects\\\\FirstPerson\\\\firstPerson\\\\Source\\\\firstPerson\\\\firstPerson.Build.cs",
+		"command": "cl.exe @\"F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_Default\\firstPerson.182.rsp\"",
+		"directory": "F:\\Source\\UnrealEngine\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\FirstPerson\\\\firstPerson\\\\Source\\\\firstPerson\\\\firstPerson.cpp",
+		"command": "cl.exe @\"F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_Default\\firstPerson.182.rsp\"",
+		"directory": "F:\\Source\\UnrealEngine\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\FirstPerson\\\\firstPerson\\\\Source\\\\firstPerson\\\\firstPerson.h",
+		"command": "cl.exe @\"F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_Default\\firstPerson.182.rsp\"",
+		"directory": "F:\\Source\\UnrealEngine\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\FirstPerson\\\\firstPerson\\\\Source\\\\firstPerson\\\\UShaderBlueprintFunctionLibrary.cpp",
+		"command": "cl.exe @\"F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_Default\\firstPerson.182.rsp\"",
+		"directory": "F:\\Source\\UnrealEngine\\Engine\\Source"
+	},
+	{
+		"file": "F:\\\\Projects\\\\FirstPerson\\\\firstPerson\\\\Source\\\\firstPerson\\\\UShaderBlueprintFunctionLibrary.h",
+		"command": "cl.exe @\"F:\\Projects\\FirstPerson\\firstPerson\\.vscode\\compileCommands_Default\\firstPerson.182.rsp\"",
+		"directory": "F:\\Source\\UnrealEngine\\Engine\\Source"
+	}
+]

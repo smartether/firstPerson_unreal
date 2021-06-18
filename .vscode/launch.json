@@ -1,0 +1,128 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "firstPerson (Debug)",
+			"request": "launch",
+			"preLaunchTask": "firstPerson Win64 Debug Build",
+			"program": "F:\\Projects\\FirstPerson\\firstPerson\\Binaries\\Win64\\firstPerson-Win64-Debug.exe",
+			"args": [
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPerson (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "firstPerson Win64 DebugGame Build",
+			"program": "F:\\Projects\\FirstPerson\\firstPerson\\Binaries\\Win64\\firstPerson-Win64-DebugGame.exe",
+			"args": [
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPerson (Development)",
+			"request": "launch",
+			"preLaunchTask": "firstPerson Win64 Development Build",
+			"program": "F:\\Projects\\FirstPerson\\firstPerson\\Binaries\\Win64\\firstPerson.exe",
+			"args": [
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPerson (Shipping)",
+			"request": "launch",
+			"preLaunchTask": "firstPerson Win64 Shipping Build",
+			"program": "F:\\Projects\\FirstPerson\\firstPerson\\Binaries\\Win64\\firstPerson-Win64-Shipping.exe",
+			"args": [
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPerson (Test)",
+			"request": "launch",
+			"preLaunchTask": "firstPerson Win64 Test Build",
+			"program": "F:\\Projects\\FirstPerson\\firstPerson\\Binaries\\Win64\\firstPerson-Win64-Test.exe",
+			"args": [
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPersonEditor (Debug)",
+			"request": "launch",
+			"preLaunchTask": "firstPersonEditor Win64 Debug Build",
+			"program": "F:\\Source\\UnrealEngine\\Engine\\Binaries\\Win64\\UE4Editor-Win64-Debug.exe",
+			"args": [
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject"
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPersonEditor (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "firstPersonEditor Win64 DebugGame Build",
+			"program": "F:\\Source\\UnrealEngine\\Engine\\Binaries\\Win64\\UE4Editor-Win64-DebugGame.exe",
+			"args": [
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject"
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "firstPersonEditor (Development)",
+			"request": "launch",
+			"preLaunchTask": "firstPersonEditor Win64 Development Build",
+			"program": "F:\\Source\\UnrealEngine\\Engine\\Binaries\\Win64\\UE4Editor.exe",
+			"args": [
+				"F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject"
+			],
+			"cwd": "F:\\Source\\UnrealEngine",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "F:\\Source\\UnrealEngine\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "Generate Project Files",
+			"type": "clr",
+			"request": "launch",
+			"program": "F:\\Source\\UnrealEngine\\Engine\\Binaries\\DotNET\\UnrealBuildTool.exe",
+			"console": "externalTerminal",
+			"args": [
+				"-projectfiles",
+				"-vscode",
+				"-project=F:\\Projects\\FirstPerson\\firstPerson\\firstPerson.uproject",
+				"-game",
+				"-engine"
+			],
+			"internalConsoleOptions": "openOnSessionStart",
+			"cwd": "F:\\Source\\UnrealEngine"
+		}
+	]
+}
