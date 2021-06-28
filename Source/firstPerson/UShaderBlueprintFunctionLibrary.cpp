@@ -91,13 +91,21 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	const FString pakFileName = TEXT("/sdcard/pakchunk0-Android_ASTC.pak");
 	FString MountPoint(FPaths::EngineContentDir());
 	FString MountPointGame(FPaths::ProjectContentDir());
+	FString MountRoot(FPaths::RootDir());
 
 	FPakFile* pak = new FPakFile(&innerPlatform, *pakFileName, false);
 	if (pak->IsValid()) {
 		UE_LOG(MyLog, Log, TEXT("$$ load pak success."), "");
+		pak->SetMountPoint(TEXT("F:/Projects/FirstPerson/repackage/Ht_pak/Hotta/Content"));
 		pakPlatformFile->Mount(*pakFileName, 1000, *MountPointGame);
+
 		TArray<FString> files;
-		pak->FindPrunedFilesAtPath(files, TEXT("F:/Projects/FirstPerson/repackage/Ht_pak/Hotta/Content/Resources/CoreMaterials/MasterMaterials"), true, false, true);
+		pak->FindPrunedFilesAtPath(files, TEXT("F:/Projects/FirstPerson/repackage/Ht_pak/Hotta/Content/AnimeToonShading"), true, false, true);
+
+		//auto contentFolder = pak->GetMountPoint() + TEXT("Hotta/Content/");
+		//UE_LOG(MyLog, Log, TEXT("$$ contentFolder:%s"), *contentFolder);
+		//FPackageName::RegisterMountPoint("/Game/", contentFolder);
+		
 		for (auto file : files) {
 			FString Filename, FileExtn, FileLongName;
 			int32 LastSlashIndex;
@@ -112,13 +120,14 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 
 			//UE_LOG(MyLog, Log, TEXT("$$ file:%s"), *file);
 			auto relPath = pakPlatformFile->ConvertToPakRelativePath(*file, pak);
+			relPath = relPath.Replace(TEXT("Hotta/Content/"), TEXT(""));
 			UE_LOG(MyLog, Log, TEXT("$$ file rel1:%s"), *relPath);
 			relPath = relPath.Replace(*FileOnly, TEXT("")) + FileLongName;
 			UE_LOG(MyLog, Log, TEXT("$$ file rel2:%s"), *relPath);
 
-			FString relPathM = TEXT("/Engine/") + relPath;;
-			UShaderBlueprintFunctionLibrary::ObjectPaths->AddUnique(FSoftObjectPath(relPathM));
-			UShaderBlueprintFunctionLibrary::ObjectPtrs->AddUnique(TSoftObjectPtr<UObject>((*UShaderBlueprintFunctionLibrary::ObjectPaths)[UShaderBlueprintFunctionLibrary::ObjectPaths->Num() - 1]));
+			//FString relPathM = TEXT("/Engine/") + relPath;;
+			//UShaderBlueprintFunctionLibrary::ObjectPaths->AddUnique(FSoftObjectPath(relPathM));
+			//UShaderBlueprintFunctionLibrary::ObjectPtrs->AddUnique(TSoftObjectPtr<UObject>((*UShaderBlueprintFunctionLibrary::ObjectPaths)[UShaderBlueprintFunctionLibrary::ObjectPaths->Num() - 1]));
 
 			FString relPathGame = TEXT("/Game/") + relPath;
 			UShaderBlueprintFunctionLibrary::ObjectPaths->AddUnique(FSoftObjectPath(relPathGame));
@@ -127,9 +136,10 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 		}
 
 
-		FStreamableManager& streamableMgr = UAssetManager::GetStreamableManager();
-		streamableHandlePtr = streamableMgr.RequestAsyncLoad(*UShaderBlueprintFunctionLibrary::ObjectPaths, FStreamableDelegate::CreateUObject(callback, &UAssetLoadedCallback::OnCreateAllChildren));
-		
+		if (UShaderBlueprintFunctionLibrary::ObjectPaths->Num() > 0) {
+			FStreamableManager& streamableMgr = UAssetManager::GetStreamableManager();
+			streamableHandlePtr = streamableMgr.RequestAsyncLoad(*UShaderBlueprintFunctionLibrary::ObjectPaths, FStreamableDelegate::CreateUObject(callback, &UAssetLoadedCallback::OnCreateAllChildren));
+
 		
 		auto loadObj = streamableMgr.LoadSynchronous<UObject>((*UShaderBlueprintFunctionLibrary::ObjectPaths)[1]);
 		if (loadObj != nullptr) {
@@ -137,6 +147,8 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 		}
 		else {
 			UE_LOG(MyLog, Log, TEXT("$$ load obj[0] failed."), "");
+		}
+
 		}
 		/*
 		TArray<FString> paths;
@@ -196,7 +208,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 		}
 	}
 	//LoadShaderSourceFileChecked()
-
+	/*
 	bool rootFolder = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), TEXT(""));
 	bool bFileFolder = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), TEXT("firstPerson"));
 	bool bContentFolder = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), FString(TEXT("Game")).Append("/").Append(TEXT("Content")));
@@ -204,7 +216,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	UE_LOG(MyLog, Log, TEXT("%s"), (rootFolder ? TEXT("$$ load hotta shader from rootFolder") : TEXT("$$ couldn't load hotta shader from rootFolder")));
 	UE_LOG(MyLog, Log, TEXT("%s"), (bFileFolder ? TEXT("$$ load hotta shader from FileFolder") : TEXT("$$ couldn't load hotta shader from FileFolder")));
 	UE_LOG(MyLog, Log, TEXT("%s"), (bContentFolder ? TEXT("$$ load hotta shader from ContentFolder") : TEXT("$$ couldn't load hotta shader from ContentFolder")));
-
+	*/
 	GetAllVirtualShaderSourcePaths(jsonSeriArr, EShaderPlatform::SP_OPENGL_PCES3_1);
 	UE_LOG(MyLog, Log, TEXT("$$ shader source path count: %i"), jsonSeriArr.Num());
 
