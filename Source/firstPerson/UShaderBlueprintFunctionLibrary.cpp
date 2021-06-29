@@ -34,6 +34,19 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 	for (auto objectPtr : loadedObjects) {
 		if (objectPtr != nullptr) {
 			UE_LOG(MyLog, Log, TEXT("$$ object loaded: %s"), *(objectPtr->GetFName().ToString()));
+
+			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
+				
+				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
+				if (mm != nullptr) {
+					
+					//FVertexFactoryType* vertexFt = FVertexFactoryType::GetVFByName(FHashedName(TEXT("")));
+					FLocalVertexFactory vertexF;
+					auto matRes = mm->GetMaterialResource(ERHIFeatureLevel::ES3_1);
+					auto shader = matRes->GetShader<FShaderType>(&vertexFt);
+					
+				}
+			}
 		}
 	}
 }
