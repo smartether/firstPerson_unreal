@@ -89,23 +89,58 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	pakPlatformFile->MountAllPakFiles(jsonArr);
 
 	const FString pakFileName = TEXT("/sdcard/pakchunk0-Android_ASTC.pak");
-	FString MountPoint(FPaths::EngineContentDir());
+	FString MountPointEngine(FPaths::EngineContentDir());
 	FString MountPointGame(FPaths::ProjectContentDir());
 	FString MountRoot(FPaths::RootDir());
 
-	FPakFile* pak = new FPakFile(&innerPlatform, *pakFileName, false);
+	
+	
+	FPakFile* pak = nullptr;// new FPakFile(&innerPlatform, *pakFileName, false);
+	pak = reinterpret_cast<FPakFile*>(FCoreDelegates::MountPak.Execute(pakFileName, 4));
+	
+	
 	if (pak->IsValid()) {
 		UE_LOG(MyLog, Log, TEXT("$$ load pak success."), "");
-		pak->SetMountPoint(TEXT("F:/Projects/FirstPerson/repackage/Ht_pak/Hotta/Content"));
-		pakPlatformFile->Mount(*pakFileName, 1000, *MountPointGame);
+		//pakPlatformFile->Mount(*pakFileName, 1000, *MountRoot);
+		auto engineContentFolder = pak->GetMountPoint() + TEXT("Engine/Content/");
+		UE_LOG(MyLog, Log, TEXT("$$ engineContentFolder:%s"), *engineContentFolder);
+		FPackageName::RegisterMountPoint("/Engine/", engineContentFolder);
+
+		auto gameContentFolder = pak->GetMountPoint() + TEXT("firstPerson/Content/");
+		UE_LOG(MyLog, Log, TEXT("$$ contentFolder:%s"), *gameContentFolder);
+		FPackageName::RegisterMountPoint("/Game/", gameContentFolder);
+		
+		if (!FShaderCodeLibrary::IsEnabled()) {
+			UE_LOG(MyLog, Log, TEXT("$$ will init shaderCodeLib"), "");
+			FShaderCodeLibrary::InitForRuntime(EShaderPlatform::SP_OPENGL_ES3_1_ANDROID);
+		}
+
+
+		auto bOpenShaderLib0 = FShaderCodeLibrary::OpenLibrary(TEXT("Global"), FPaths::ProjectContentDir());
+		auto bOpenShaderLib01 = FShaderCodeLibrary::OpenLibrary(TEXT("Global"), TEXT("/Game/"));
+		auto bOpenShaderLib1 = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), FPaths::ProjectContentDir());
+		auto bOpenShaderLib2 = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), TEXT("/Game/"));
+		
+		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib0:%s"), (bOpenShaderLib0 ? TEXT("success") : TEXT("failed")));
+		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib01:%s"), (bOpenShaderLib01 ? TEXT("success") : TEXT("failed")));
+		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib1:%s"), (bOpenShaderLib1 ? TEXT("success") : TEXT("failed")));
+		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib2:%s"), (bOpenShaderLib2 ? TEXT("success") : TEXT("failed")));
+		
+		//FJsonSerializableArray oldFolder;
+		//FShaderCodeLibrary::CreatePatchLibrary(oldFolder, FPaths::ProjectContentDir(), TEXT(""), true, false);
 
 		TArray<FString> files;
-		pak->FindPrunedFilesAtPath(files, TEXT("F:/Projects/FirstPerson/repackage/Ht_pak/Hotta/Content/AnimeToonShading"), true, false, true);
+		pak->FindPrunedFilesAtPath(files, TEXT("../../../firstPerson/Content/AnimeToonShading"), true, false, true);
+		//FJsonSerializableArray fileNames;
+		//pak->GetPrunedFilenames(fileNames);
+		//int maxPrintNum = 32;
+		//for (auto fileName : fileNames) {
+		//	if (maxPrintNum < 0)
+		//		break;
+		//	UE_LOG(MyLog, Log, TEXT("$$ fileName:%s"), *fileName);
+		//	maxPrintNum--;
+		//}
 
-		//auto contentFolder = pak->GetMountPoint() + TEXT("Hotta/Content/");
-		//UE_LOG(MyLog, Log, TEXT("$$ contentFolder:%s"), *contentFolder);
-		//FPackageName::RegisterMountPoint("/Game/", contentFolder);
-		
 		for (auto file : files) {
 			FString Filename, FileExtn, FileLongName;
 			int32 LastSlashIndex;
@@ -120,7 +155,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 
 			//UE_LOG(MyLog, Log, TEXT("$$ file:%s"), *file);
 			auto relPath = pakPlatformFile->ConvertToPakRelativePath(*file, pak);
-			relPath = relPath.Replace(TEXT("Hotta/Content/"), TEXT(""));
+			relPath = relPath.Replace(TEXT("firstPerson/Content/"), TEXT(""));
 			UE_LOG(MyLog, Log, TEXT("$$ file rel1:%s"), *relPath);
 			relPath = relPath.Replace(*FileOnly, TEXT("")) + FileLongName;
 			UE_LOG(MyLog, Log, TEXT("$$ file rel2:%s"), *relPath);
@@ -140,14 +175,14 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 			FStreamableManager& streamableMgr = UAssetManager::GetStreamableManager();
 			streamableHandlePtr = streamableMgr.RequestAsyncLoad(*UShaderBlueprintFunctionLibrary::ObjectPaths, FStreamableDelegate::CreateUObject(callback, &UAssetLoadedCallback::OnCreateAllChildren));
 
-		
-		auto loadObj = streamableMgr.LoadSynchronous<UObject>((*UShaderBlueprintFunctionLibrary::ObjectPaths)[1]);
-		if (loadObj != nullptr) {
-			UE_LOG(MyLog, Log, TEXT("$$ load obj[0] %s "), *(loadObj->GetFName().ToString()));
-		}
-		else {
-			UE_LOG(MyLog, Log, TEXT("$$ load obj[0] failed."), "");
-		}
+
+			auto loadObj = streamableMgr.LoadSynchronous<UObject>((*UShaderBlueprintFunctionLibrary::ObjectPaths)[1]);
+			if (loadObj != nullptr) {
+				UE_LOG(MyLog, Log, TEXT("$$ load obj[0] %s "), *(loadObj->GetFName().ToString()));
+			}
+			else {
+				UE_LOG(MyLog, Log, TEXT("$$ load obj[0] failed."), "");
+			}
 
 		}
 		/*
