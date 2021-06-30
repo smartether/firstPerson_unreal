@@ -153,7 +153,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	
 	if (pak->IsValid()) {
 		UE_LOG(MyLog, Log, TEXT("$$ load pak success."), "");
-		//pakPlatformFile->Mount(*pakFileName, 1000, *MountRoot);
+		pakPlatformFile->Mount(*pakFileName, 1000, *MountRoot);
 		auto engineContentFolder = pak->GetMountPoint() + TEXT("Engine/Content/");
 		UE_LOG(MyLog, Log, TEXT("$$ engineContentFolder:%s"), *engineContentFolder);
 		FPackageName::RegisterMountPoint("/Engine/", engineContentFolder);
@@ -167,10 +167,13 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 			FShaderCodeLibrary::InitForRuntime(EShaderPlatform::SP_OPENGL_ES3_1_ANDROID);
 		}
 
-
+		auto globalShaderPath = FPaths::RootDir() + TEXT("Hotta/Content/");
+		UE_LOG(MyLog, Log, TEXT("$$ load global shader at %s"), *globalShaderPath); 
+		auto bOpenShaderLibGlobal = FShaderCodeLibrary::OpenLibrary(TEXT("Global"), globalShaderPath);
 		auto bOpenShaderLib0 = FShaderCodeLibrary::OpenLibrary(TEXT("Global"), FPaths::ProjectContentDir());
 		auto bOpenShaderLib1 = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), FPaths::ProjectContentDir());
-		
+
+		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLibGlobal:%s"), (bOpenShaderLibGlobal ? TEXT("success") : TEXT("failed")));
 		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib0:%s"), (bOpenShaderLib0 ? TEXT("success") : TEXT("failed")));
 		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib1:%s"), (bOpenShaderLib1 ? TEXT("success") : TEXT("failed")));
 		
