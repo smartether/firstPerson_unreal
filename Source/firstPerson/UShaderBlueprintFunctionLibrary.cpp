@@ -36,15 +36,54 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 			UE_LOG(MyLog, Log, TEXT("$$ object loaded: %s"), *(objectPtr->GetFName().ToString()));
 
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
-				
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
 					
-					//FVertexFactoryType* vertexFt = FVertexFactoryType::GetVFByName(FHashedName(TEXT("")));
-					FLocalVertexFactory vertexF;
-					auto matRes = mm->GetMaterialResource(ERHIFeatureLevel::ES3_1);
-					auto shader = matRes->GetShader<FShaderType>(&vertexFt);
+					//FLocalVertexFactory vertexF(ERHIFeatureLevel::ES3_1, "");
+					const FMaterialResource* matRes = mm->GetMaterialResource(ERHIFeatureLevel::ES3_1);
+					UE_LOG(MyLog, Log, TEXT("$$ step1"), "");
+					auto shaderMap = matRes->GetGameThreadShaderMap();
+					if (shaderMap != nullptr) {
+						auto shaderID = shaderMap->GetShaderMapId();
+						
+						UE_LOG(MyLog, Log, TEXT("$$ step2"), "");
+						auto shadermapResource = shaderMap->GetResource();
+						UE_LOG(MyLog, Log, TEXT("$$ step3"), "");
+						
+						
+						//FMaterialShaderType* shaderType = reinterpret_cast<FMaterialShaderType*>(FShaderType::GetShaderTypeByName(TEXT("FNiagaraShader")));
+						UE_LOG(MyLog, Log, TEXT("$$ step4"), "");
+						//if (shaderType != nullptr) {
+							TMap<FHashedName, TShaderRef<FShader>> shaderList;
+							shaderMap->GetShaderList(shaderList);
+							for (auto kv : shaderList) {
+								//auto shaderName  = kv.Value.GetRHIShaderBase(EShaderFrequency::SF_Vertex)->ShaderName;
+								UE_LOG(MyLog, Log, TEXT("$$ shader codeSize:%u"), kv.Value->GetCodeSize());
+								//for (auto param : kv.Value->GetRootParametersMetadata()->GetMembers()) {
+								//	UE_LOG(MyLog, Log, TEXT("$$ shader param:%s"), param.GetName());
+								//}
+							}
+							
+							UE_LOG(MyLog, Log, TEXT("$$ step5"), "");
+						//}
+						
+					}
 					
+					//auto shaderSrc = (FString*)(shaderMap->GetShaderSource(TEXT("FMaterialShaderType")));
+					//UE_LOG(MyLog, Log, TEXT("$$ shaderSrc:\n %s"), *shaderSrc);
+
+					/*
+					auto shader = matRes->GetGameThreadShaderMap()->GetShader(0);
+					UE_LOG(MyLog, Log, TEXT("$$ step2"), "");
+					auto shaderRes = FShaderCodeLibrary::LoadResource(shader->GetHash(), nullptr);
+					UE_LOG(MyLog, Log, TEXT("$$ step3"), "");
+					auto shaderFRHI = shaderRes->GetShader(shader->GetResourceIndex());
+					UE_LOG(MyLog, Log, TEXT("$$ step4"), "");
+					auto shaderRHI = FShaderCodeLibrary::CreateVertexShader(EShaderPlatform::SP_OPENGL_ES3_1_ANDROID, shader->GetHash());
+					UE_LOG(MyLog, Log, TEXT("$$ step5"), "");
+					UE_LOG(MyLog, Log, TEXT("$$ shaderHash:%s  shaderNameRHI:%s shaderNameFRHI:%s"), *(shader->GetHash().ToString()), shaderRHI->GetShaderName(), shaderFRHI->GetShaderName());
+					UE_LOG(MyLog, Log, TEXT("$$ step6"), "");
+					*/
 				}
 			}
 		}
@@ -130,14 +169,10 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 
 
 		auto bOpenShaderLib0 = FShaderCodeLibrary::OpenLibrary(TEXT("Global"), FPaths::ProjectContentDir());
-		auto bOpenShaderLib01 = FShaderCodeLibrary::OpenLibrary(TEXT("Global"), TEXT("/Game/"));
 		auto bOpenShaderLib1 = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), FPaths::ProjectContentDir());
-		auto bOpenShaderLib2 = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), TEXT("/Game/"));
 		
 		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib0:%s"), (bOpenShaderLib0 ? TEXT("success") : TEXT("failed")));
-		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib01:%s"), (bOpenShaderLib01 ? TEXT("success") : TEXT("failed")));
 		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib1:%s"), (bOpenShaderLib1 ? TEXT("success") : TEXT("failed")));
-		UE_LOG(MyLog, Log, TEXT("$$ bOpenShaderLib2:%s"), (bOpenShaderLib2 ? TEXT("success") : TEXT("failed")));
 		
 		//FJsonSerializableArray oldFolder;
 		//FShaderCodeLibrary::CreatePatchLibrary(oldFolder, FPaths::ProjectContentDir(), TEXT(""), true, false);
