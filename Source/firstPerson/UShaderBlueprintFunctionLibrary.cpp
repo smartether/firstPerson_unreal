@@ -49,7 +49,7 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 	for (auto objectPtr : loadedObjects) {
 		if (objectPtr != nullptr) {
 			UE_LOG(MyLog, Log, TEXT("$$ object loaded: %s"), *(objectPtr->GetFName().ToString()));
-
+			0-
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
@@ -85,10 +85,14 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 								if (shadercodeArchive != nullptr) {
 									FGraphEventArray evtArr;
 									shadercodeArchive->PreloadShader(resIdx, evtArr);
-									auto rhiShader = shadercodeArchive->CreateShader(resIdx);
-									if (rhiShader != nullptr) {
-										UE_LOG(MyLog, Log, TEXT("$$ rhiShader name:%s"), *rhiShader->ShaderName);
+									auto shaderCode = shadercodeArchive->GetShaderCode(resIdx);
+									if (shaderCode != nullptr) {
+										UE_LOG(MyLog, Log, TEXT("$$ shadercode:%s"),TEXT((const char*)shaderCode));
 									}
+									//auto rhiShader = shadercodeArchive->CreateShader(resIdx);
+									//if (rhiShader != nullptr) {
+									//	UE_LOG(MyLog, Log, TEXT("$$ rhiShader name:%s"), *rhiShader->ShaderName);
+									//}
 								}
 
 								
