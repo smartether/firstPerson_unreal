@@ -17,8 +17,16 @@
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "Delegates/DelegateSignatureImpl.inl"
+#include "ShaderCodeLibrary.h"
+#include "ShaderCodeArchive.h"
 
 DEFINE_LOG_CATEGORY(MyLog);
+
+
+static FString GetCodeArchiveFilename(const FString& BaseDir, const FString& LibraryName, FName Platform)
+{
+	return BaseDir / FString::Printf(TEXT("ShaderArchive-%s-"), *LibraryName) + Platform.ToString() + TEXT(".ushaderbytecode");
+}
 
 void UAssetLoadedCallback::OnCreateAllChildren() {
 	UE_LOG(MyLog, Log, TEXT("$$ assetLoaded"), "");
@@ -28,9 +36,16 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 	//auto objectPtrs = UShaderBlueprintFunctionLibrary::GetObjectPtrs();
 	TArray<UObject*> loadedObjects;
 	streamableHandle->GetLoadedAssets(loadedObjects);
-	//for (auto objectPath : *objectPaths) {
-	//	
-	//}
+	
+	FShaderCodeArchive* shadercodeArchive = nullptr;
+	auto DestFilePath = GetCodeArchiveFilename(FPaths::ProjectContentDir(), TEXT("Hotta"), TEXT("GLSL_ES3_1_ANDROID"));
+	TUniquePtr<FArchive> shaderArchive(IFileManager::Get().CreateFileReader(*DestFilePath));
+	if (shaderArchive) {
+		uint32 Version = 0;
+		*shaderArchive << Version;
+		shadercodeArchive = FShaderCodeArchive::Create(EShaderPlatform::SP_OPENGL_ES3_1_ANDROID, *shaderArchive, DestFilePath, FPaths::ProjectContentDir(), TEXT("Hotta"));
+	}
+
 	for (auto objectPtr : loadedObjects) {
 		if (objectPtr != nullptr) {
 			UE_LOG(MyLog, Log, TEXT("$$ object loaded: %s"), *(objectPtr->GetFName().ToString()));
@@ -47,25 +62,48 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 						auto shaderID = shaderMap->GetShaderMapId();
 						
 						UE_LOG(MyLog, Log, TEXT("$$ step2"), "");
-						auto shadermapResource = shaderMap->GetResource();
+						auto shadermapResource = shaderMap->GetResourceChecked();
 						UE_LOG(MyLog, Log, TEXT("$$ step3"), "");
 						
 						
 						//FMaterialShaderType* shaderType = reinterpret_cast<FMaterialShaderType*>(FShaderType::GetShaderTypeByName(TEXT("FNiagaraShader")));
 						UE_LOG(MyLog, Log, TEXT("$$ step4"), "");
-						//if (shaderType != nullptr) {
+						
 							TMap<FHashedName, TShaderRef<FShader>> shaderList;
 							shaderMap->GetShaderList(shaderList);
 							for (auto kv : shaderList) {
+								
 								//auto shaderName  = kv.Value.GetRHIShaderBase(EShaderFrequency::SF_Vertex)->ShaderName;
 								UE_LOG(MyLog, Log, TEXT("$$ shader codeSize:%u"), kv.Value->GetCodeSize());
 								//for (auto param : kv.Value->GetRootParametersMetadata()->GetMembers()) {
 								//	UE_LOG(MyLog, Log, TEXT("$$ shader param:%s"), param.GetName());
 								//}
+								
+								auto resIdx = kv.Value->GetResourceIndex();
+								UE_LOG(MyLog, Log, TEXT("$$ shader res idx:%i"), resIdx);
+
+								if (shadercodeArchive != nullptr) {
+									FGraphEventArray evtArr;
+									shadercodeArchive->PreloadShader(resIdx, evtArr);
+									auto rhiShader = shadercodeArchive->CreateShader(resIdx);
+									if (rhiShader != nullptr) {
+										UE_LOG(MyLog, Log, TEXT("$$ rhiShader name:%s"), *rhiShader->ShaderName);
+									}
+								}
+
+								
+								//auto rhiShader = shadermapResource->GetShader(resIdx);
+								//UE_LOG(MyLog, Log, TEXT("$$ shader name;%s"), rhiShader->GetShaderName());
+																
+								if (!kv.Value->IsFrozen()) {
+									auto type = kv.Value->GetTypeUnfrozen();
+									if (type != nullptr) {
+										UE_LOG(MyLog, Log, TEXT("$$ shader name:%s"), *type->GetFName().ToString());
+									}
+								}
 							}
 							
 							UE_LOG(MyLog, Log, TEXT("$$ step5"), "");
-						//}
 						
 					}
 					
@@ -115,6 +153,8 @@ TArray<TSoftObjectPtr<UObject>>* UShaderBlueprintFunctionLibrary::GetObjectPtrs(
 TSharedPtr<FStreamableHandle> UShaderBlueprintFunctionLibrary::GetStreamableHandle() {
 	return streamableHandlePtr;
 }
+
+
 
 void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 
@@ -191,6 +231,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 		//	UE_LOG(MyLog, Log, TEXT("$$ fileName:%s"), *fileName);
 		//	maxPrintNum--;
 		//}
+
 
 		for (auto file : files) {
 			FString Filename, FileExtn, FileLongName;
