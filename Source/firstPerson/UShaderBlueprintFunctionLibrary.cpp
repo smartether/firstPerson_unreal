@@ -90,8 +90,13 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 									auto chardata = (ANSICHAR*)shaderCode.GetData();
 									
 									
+									
 									for (auto uniformBuff : kv.Value->ParameterMapInfo.UniformBuffers) {
 										UE_LOG(MyLog, Log, TEXT("$$ uniform baseIdx:%i"), uniformBuff.BaseIndex);
+									}
+									auto members = kv.Value->FindAutomaticallyBoundUniformBufferStruct(0)->GetMembers();
+									for (auto mem : members) {
+										UE_LOG(MyLog, Log, TEXT("$$ shaderVariablename:%s"), mem.GetName());
 									}
 
 									//auto metadata = kv.Value->GetP
