@@ -49,7 +49,6 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 	for (auto objectPtr : loadedObjects) {
 		if (objectPtr != nullptr) {
 			UE_LOG(MyLog, Log, TEXT("$$ object loaded: %s"), *(objectPtr->GetFName().ToString()));
-			0-
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
@@ -85,10 +84,27 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 								if (shadercodeArchive != nullptr) {
 									FGraphEventArray evtArr;
 									shadercodeArchive->PreloadShader(resIdx, evtArr);
-									auto shaderCode = shadercodeArchive->GetShaderCode(resIdx);
-									if (shaderCode != nullptr) {
-										UE_LOG(MyLog, Log, TEXT("$$ shadercode:%s"),TEXT((const char*)shaderCode));
+									int charSize = 0;
+									FSHAHash hash;
+									auto shaderCode = shadercodeArchive->GetShaderCode(resIdx, charSize, hash);
+									auto chardata = (ANSICHAR*)shaderCode.GetData();
+									
+									
+									for (auto uniformBuff : kv.Value->ParameterMapInfo.UniformBuffers) {
+										UE_LOG(MyLog, Log, TEXT("$$ uniform baseIdx:%i"), uniformBuff.BaseIndex);
 									}
+
+									//auto metadata = kv.Value->GetP
+									//auto staticSlotname = metadata->GetStaticSlotName();
+									//auto structName = metadata->GetStructTypeName();
+									//auto shaderVariableName = metadata->GetShaderVariableName();
+									//UE_LOG(MyLog, Log, TEXT("$$ staticSlotname:%s  structTypeName:%s  shaderVariableName:%s"), staticSlotname, structName, shaderVariableName);
+
+									FString shaderCodeStr(charSize, chardata);
+									FFileHelper::SaveStringToFile(shaderCodeStr, *(FString(TEXT("/sdcard/")) + hash.ToString() + FString(TEXT(".glsl"))));
+
+									UE_LOG(MyLog, Log, TEXT("$$ shadercode size:%i code:%s"), charSize, *shaderCodeStr);
+									
 									//auto rhiShader = shadercodeArchive->CreateShader(resIdx);
 									//if (rhiShader != nullptr) {
 									//	UE_LOG(MyLog, Log, TEXT("$$ rhiShader name:%s"), *rhiShader->ShaderName);
