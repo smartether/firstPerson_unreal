@@ -52,7 +52,14 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
-					
+					TArray<FMaterialParameterInfo> paramsInfo;
+					TArray<FGuid> paramsID;
+					mm->GetAllScalarParameterInfo(paramsInfo, paramsID);
+					for (auto paramInfo : paramsInfo) {
+						UE_LOG(MyLog, Log, TEXT("$$ paramName:%s"), *paramInfo.Name.ToString());
+					}
+
+
 					//FLocalVertexFactory vertexF(ERHIFeatureLevel::ES3_1, "");
 					const FMaterialResource* matRes = mm->GetMaterialResource(ERHIFeatureLevel::ES3_1);
 					UE_LOG(MyLog, Log, TEXT("$$ step1"), "");
@@ -69,9 +76,9 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 						UE_LOG(MyLog, Log, TEXT("$$ step4"), "");
 						
 							TMap<FHashedName, TShaderRef<FShader>> shaderList;
+							UE_LOG(MyLog, Log, TEXT("$$ shaderNum:%i"), shaderMap->GetShaderNum());
 							shaderMap->GetShaderList(shaderList);
 							for (auto kv : shaderList) {
-								
 								//auto shaderName  = kv.Value.GetRHIShaderBase(EShaderFrequency::SF_Vertex)->ShaderName;
 								UE_LOG(MyLog, Log, TEXT("$$ shader codeSize:%u"), kv.Value->GetCodeSize());
 								//for (auto param : kv.Value->GetRootParametersMetadata()->GetMembers()) {
@@ -88,16 +95,41 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 									FSHAHash hash;
 									auto shaderCode = shadercodeArchive->GetShaderCode(resIdx, charSize, hash);
 									auto chardata = (ANSICHAR*)shaderCode.GetData();
+
+									for (auto param : kv.Value->Bindings.ResourceParameters) {
+										UE_LOG(MyLog, Log, TEXT("$$ paramIdx:%i"), param.BaseIndex);
+									}
+
+									auto paramMeta = kv.Value->GetRootParametersMetadata();
+									//auto uniformBuffParam = kv.Value->GetUniformBufferParameter(paramMeta->GetShaderVariableHashedName());
 									
+									auto nameStructMap = paramMeta->GetNameStructMap();
+									UE_LOG(MyLog, Log, TEXT("$$ getnameStructMap"), "");
+									for (auto nameStruct : nameStructMap) {
+										UE_LOG(MyLog, Log, TEXT("$$ shaderVariableName:%s"), nameStruct.Value->GetShaderVariableName());
+										UE_LOG(MyLog, Log, TEXT("$$ structTypeName:%s"), nameStruct.Value->GetStructTypeName());
+
+										//for (auto mem : nameStruct.Value->GetMembers()) {
+										//	UE_LOG(MyLog, Log, TEXT("$$ memberName:%s"), mem.GetName());
+										//}
+									}
 									
-									
+									for (auto unibuff : kv.Value->Bindings.GraphUniformBuffers) {
+										UE_LOG(MyLog, Log, TEXT("$$ uniBuff name:%s  idx:%i"), unibuff.GetTypeLayout().Name, unibuff.BufferIndex);
+									}
+									for (auto param : kv.Value->Bindings.Parameters) {
+										UE_LOG(MyLog, Log, TEXT("$$ parameter baseIdx:%i name:%s"), param.BaseIndex, param.GetTypeLayout().Name);
+									}
+									/*
 									for (auto uniformBuff : kv.Value->ParameterMapInfo.UniformBuffers) {
 										UE_LOG(MyLog, Log, TEXT("$$ uniform baseIdx:%i"), uniformBuff.BaseIndex);
+										auto members = kv.Value->FindAutomaticallyBoundUniformBufferStruct(uniformBuff.BaseIndex)->GetMembers();
+										//GetStaticSlotName
+										for (auto mem : members) {
+											UE_LOG(MyLog, Log, TEXT("$$ memberName:%s"), mem.GetName());
+										}
 									}
-									auto members = kv.Value->FindAutomaticallyBoundUniformBufferStruct(0)->GetMembers();
-									for (auto mem : members) {
-										UE_LOG(MyLog, Log, TEXT("$$ shaderVariablename:%s"), mem.GetName());
-									}
+									*/
 
 									//auto metadata = kv.Value->GetP
 									//auto staticSlotname = metadata->GetStaticSlotName();
