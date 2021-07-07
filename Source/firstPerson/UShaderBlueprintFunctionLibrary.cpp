@@ -54,9 +54,11 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 				if (mm != nullptr) {
 					TArray<FMaterialParameterInfo> paramsInfo;
 					TArray<FGuid> paramsID;
-					mm->GetAllScalarParameterInfo(paramsInfo, paramsID);
+					mm->GetAllScalarParameterInfo(paramsInfo, paramsID); 
+					int guidIdx = 0;
 					for (auto paramInfo : paramsInfo) {
-						UE_LOG(MyLog, Log, TEXT("$$ paramName:%s"), *paramInfo.Name.ToString());
+						UE_LOG(MyLog, Log, TEXT("$$ paramName:%s index:%i guid:%s"), *paramInfo.Name.ToString(), paramInfo.Index, *paramsID[guidIdx].ToString());
+						guidIdx++;
 					}
 
 
@@ -74,7 +76,9 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 						
 						//FMaterialShaderType* shaderType = reinterpret_cast<FMaterialShaderType*>(FShaderType::GetShaderTypeByName(TEXT("FNiagaraShader")));
 						UE_LOG(MyLog, Log, TEXT("$$ step4"), "");
-						
+
+						auto rootParamMeta = FShader::GetRootParametersMetadata();
+
 							TMap<FHashedName, TShaderRef<FShader>> shaderList;
 							UE_LOG(MyLog, Log, TEXT("$$ shaderNum:%i"), shaderMap->GetShaderNum());
 							shaderMap->GetShaderList(shaderList);
@@ -84,6 +88,7 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 								//for (auto param : kv.Value->GetRootParametersMetadata()->GetMembers()) {
 								//	UE_LOG(MyLog, Log, TEXT("$$ shader param:%s"), param.GetName());
 								//}
+								
 								
 								auto resIdx = kv.Value->GetResourceIndex();
 								UE_LOG(MyLog, Log, TEXT("$$ shader res idx:%i"), resIdx);
@@ -100,10 +105,33 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 										UE_LOG(MyLog, Log, TEXT("$$ paramIdx:%i"), param.BaseIndex);
 									}
 
-									auto paramMeta = kv.Value->GetRootParametersMetadata();
-									//auto uniformBuffParam = kv.Value->GetUniformBufferParameter(paramMeta->GetShaderVariableHashedName());
+									auto kvTmp = kv;
+									ENQUEUE_RENDER_COMMAND(TEST)(
+										[kvTmp, rootParamMeta](FRHICommandListImmediate& RHICmdList)
+										{
+											auto uniformBuffParam = kvTmp.Value->GetUniformBufferParameter(rootParamMeta);
+											UE_LOG(MyLog, Log, TEXT("$$ uniformBuffParam"), "");
+										});
 									
-									auto nameStructMap = paramMeta->GetNameStructMap();
+									const uint8* Base = reinterpret_cast<const uint8*>(&kv.Value->Bindings.Parameters);
+									for (const FShaderParameterBindings::FParameterStructReference& ParameterBinding : kv.Value->Bindings.ParameterReferences)
+									{
+										const TRefCountPtr<FRHIUniformBuffer>& ShaderParameterRef = *reinterpret_cast<const TRefCountPtr<FRHIUniformBuffer>*>(Base + ParameterBinding.ByteOffset);
+										
+									}
+
+
+									for (auto uniformBuff : kv.Value->ParameterMapInfo.UniformBuffers) {
+										UE_LOG(MyLog, Log, TEXT("$$ uniform baseIdx:%i"), uniformBuff.BaseIndex);
+										//auto members = kv.Value->FindAutomaticallyBoundUniformBufferStruct(uniformBuff.BaseIndex)->GetMembers();
+										//for (auto mem : members) {
+										//	UE_LOG(MyLog, Log, TEXT("$$ memberName:%s"), mem.GetName());
+										//}
+									}
+
+									
+									
+									auto nameStructMap = rootParamMeta->GetNameStructMap();
 									UE_LOG(MyLog, Log, TEXT("$$ getnameStructMap"), "");
 									for (auto nameStruct : nameStructMap) {
 										UE_LOG(MyLog, Log, TEXT("$$ shaderVariableName:%s"), nameStruct.Value->GetShaderVariableName());
@@ -120,16 +148,7 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 									for (auto param : kv.Value->Bindings.Parameters) {
 										UE_LOG(MyLog, Log, TEXT("$$ parameter baseIdx:%i name:%s"), param.BaseIndex, param.GetTypeLayout().Name);
 									}
-									/*
-									for (auto uniformBuff : kv.Value->ParameterMapInfo.UniformBuffers) {
-										UE_LOG(MyLog, Log, TEXT("$$ uniform baseIdx:%i"), uniformBuff.BaseIndex);
-										auto members = kv.Value->FindAutomaticallyBoundUniformBufferStruct(uniformBuff.BaseIndex)->GetMembers();
-										//GetStaticSlotName
-										for (auto mem : members) {
-											UE_LOG(MyLog, Log, TEXT("$$ memberName:%s"), mem.GetName());
-										}
-									}
-									*/
+								
 
 									//auto metadata = kv.Value->GetP
 									//auto staticSlotname = metadata->GetStaticSlotName();
