@@ -1,0 +1,201 @@
+diff --git a/Engine/Source/Programs/UnrealBuildTool/Platform/Android/UEBuildAndroid.cs b/Engine/Source/Programs/UnrealBuildTool/Platform/Android/UEBuildAndroid.cs
+index 3e3fcc59d9dc78..754c8ea51068cd 100644
+--- a/Engine/Source/Programs/UnrealBuildTool/Platform/Android/UEBuildAndroid.cs
++++ b/Engine/Source/Programs/UnrealBuildTool/Platform/Android/UEBuildAndroid.cs
+@@ -584,6 +584,10 @@ namespace UnrealBuildTool
+ 					}
+ 				}
+ 
++				AndroidEnv["NDKPath"] = "E:/libs/android-ndk-r21e";
++				AndroidEnv["NDKROOT"] = "E:/libs/android-ndk-r21e";
++				AndroidEnv["ANDROID_HOME"] = "E:/libs/android_sdk_r28";
++				AndroidEnv["SDKPath"] = "E:/libs/android_sdk_r28";
+ 				// Set for the process
+ 				foreach (KeyValuePair<string, string> kvp in AndroidEnv)
+ 				{
+@@ -601,7 +605,6 @@ namespace UnrealBuildTool
+ 			}
+ 
+ 			NDKPath = NDKPath.Replace("\"", "");
+-
+ 			// need a supported llvm
+ 			if (!Directory.Exists(Path.Combine(NDKPath, @"toolchains/llvm")))
+ 			{
+@@ -617,7 +620,7 @@ namespace UnrealBuildTool
+ 			{
+ 				return SDKStatus.Invalid;
+ 			}
+-
++			
+ 			if (HasAnySDK())
+ 			{
+ 				return SDKStatus.Valid;
+diff --git a/Engine/Source/Runtime/Engine/Private/ShaderCompiler/ShaderCompiler.cpp b/Engine/Source/Runtime/Engine/Private/ShaderCompiler/ShaderCompiler.cpp
+index 97707428355fb9..04a02c6eb0b5c2 100644
+--- a/Engine/Source/Runtime/Engine/Private/ShaderCompiler/ShaderCompiler.cpp
++++ b/Engine/Source/Runtime/Engine/Private/ShaderCompiler/ShaderCompiler.cpp
+@@ -3678,6 +3678,14 @@ void GlobalBeginCompileShader(
+ 		Input.Environment.SetDefine(TEXT("ODS_CAPTURE"), bIsODSCapture);
+ 	}
+ 
++	UE_LOG(LogShaderCompilers, Log, TEXT("$$ AddReferencedUniformBufferIncludes "),"");
++	FFileHelper::SaveStringToFile(TEXT("$$ AddReferencedUniformBufferIncludes "), TEXT("/sdcard/ht.log"));
++	for (auto resTableMap : Input.Environment.ResourceTableMap) {
++		UE_LOG(LogShaderCompilers, Log, TEXT("$$ resTableMap name:%s ubuffname:%s"), *resTableMap.Key, *resTableMap.Value.UniformBufferName);
++		FFileHelper::SaveStringToFile(FString::Printf(TEXT("$$ resTableMap name:%s ubuffname:%s"), *resTableMap.Key, *resTableMap.Value.UniformBufferName)
++			, TEXT("/sdcard/ht.log"));
++	}
++
+ 	ShaderType->AddReferencedUniformBufferIncludes(Input.Environment, Input.SourceFilePrefix, ShaderPlatform);
+ 
+ 	if (VFType)
+diff --git a/Engine/Source/Runtime/RenderCore/Private/Shader.cpp b/Engine/Source/Runtime/RenderCore/Private/Shader.cpp
+index 8c6e5404bf6792..e26c36c3c9376b 100644
+--- a/Engine/Source/Runtime/RenderCore/Private/Shader.cpp
++++ b/Engine/Source/Runtime/RenderCore/Private/Shader.cpp
+@@ -548,6 +548,10 @@ FShader::FShader(const CompiledShaderInitializerType& Initializer)
+ 	}
+ #endif // WITH_EDITORONLY_DATA
+ 
++	
++	for (auto kv : Initializer.ParameterMap.GetParameterMap()) {
++		UE_LOG(LogShaders, Log, TEXT("$$ paramMap name:%s buffIdx:%i"), *kv.Key, kv.Value.BufferIndex);
++	}
+ 	BuildParameterMapInfo(Initializer.ParameterMap.GetParameterMap());
+ 
+ 	// Bind uniform buffer parameters automatically 
+diff --git a/Engine/Source/Runtime/RenderCore/Private/ShaderCodeArchive.cpp b/Engine/Source/Runtime/RenderCore/Private/ShaderCodeArchive.cpp
+index 1caa0f2d4d49d1..b5cdedc7a4f83c 100644
+--- a/Engine/Source/Runtime/RenderCore/Private/ShaderCodeArchive.cpp
++++ b/Engine/Source/Runtime/RenderCore/Private/ShaderCodeArchive.cpp
+@@ -568,6 +568,68 @@ void FShaderCodeArchive::ReleasePreloadedShader(int32 ShaderIndex)
+ 	}
+ }
+ 
++TArrayView<const uint8> FShaderCodeArchive::GetShaderCode(int32 Index, int& size, FSHAHash& hash) {
++
++	LLM_SCOPE(ELLMTag::Shaders);
++	TRefCountPtr<FRHIShader> Shader;
++
++	FMemStackBase& MemStack = FMemStack::Get();
++	FMemMark Mark(MemStack);
++
++	const FShaderCodeEntry& ShaderEntry = SerializedShaders.ShaderEntries[Index];
++	FShaderPreloadEntry& ShaderPreloadEntry = ShaderPreloads[Index];
++
++	void* PreloadedShaderCode = nullptr;
++	{
++		const bool bNeededToWait = WaitForPreload(ShaderPreloadEntry);
++		if (bNeededToWait)
++		{
++			UE_LOG(LogShaderLibrary, Warning, TEXT("Blocking wait for shader preload, NumRefs: %d, FramePreloadStarted: %d"), ShaderPreloadEntry.NumRefs, ShaderPreloadEntry.FramePreloadStarted);
++		}
++
++		FWriteScopeLock Lock(ShaderPreloadLock);
++		if (ShaderPreloadEntry.NumRefs > 0u)
++		{
++			check(!ShaderPreloadEntry.PreloadEvent || ShaderPreloadEntry.PreloadEvent->IsComplete());
++			ShaderPreloadEntry.PreloadEvent.SafeRelease();
++
++			ShaderPreloadEntry.NumRefs++; // Hold a reference to code while we're using it to create shader
++			PreloadedShaderCode = ShaderPreloadEntry.Code;
++			check(PreloadedShaderCode);
++		}
++	}
++
++	const uint8* ShaderCode = (uint8*)PreloadedShaderCode;
++	if (!ShaderCode)
++	{
++		UE_LOG(LogShaderLibrary, Warning, TEXT("Blocking shader load, NumRefs: %d, FramePreloadStarted: %d"), ShaderPreloadEntry.NumRefs, ShaderPreloadEntry.FramePreloadStarted);
++
++		FGraphEventArray ReadCompleteEvents;
++		EAsyncIOPriorityAndFlags DontCache = GShaderCodeLibraryAsyncLoadingAllowDontCache ? AIOP_FLAG_DONTCACHE : AIOP_MIN;
++		IMemoryReadStreamRef LoadedCode = FileCacheHandle->ReadData(ReadCompleteEvents, LibraryCodeOffset + ShaderEntry.Offset, ShaderEntry.Size, AIOP_CriticalPath | DontCache);
++		if (ReadCompleteEvents.Num() > 0)
++		{
++			FTaskGraphInterface::Get().WaitUntilTasksComplete(ReadCompleteEvents);
++		}
++		void* LoadedShaderCode = MemStack.Alloc(ShaderEntry.Size, 16);
++		LoadedCode->CopyTo(LoadedShaderCode, 0, ShaderEntry.Size);
++		ShaderCode = (uint8*)LoadedShaderCode;
++	}
++
++	if (ShaderEntry.UncompressedSize != ShaderEntry.Size)
++	{
++		void* UncompressedCode = MemStack.Alloc(ShaderEntry.UncompressedSize, 16);
++		const bool bDecompressResult = FCompression::UncompressMemory(ShaderLibraryCompressionFormat, UncompressedCode, ShaderEntry.UncompressedSize, ShaderCode, ShaderEntry.Size);
++		check(bDecompressResult);
++		ShaderCode = (uint8*)UncompressedCode;
++	}
++	const FSHAHash& ShaderHash = SerializedShaders.ShaderHashes[Index];
++	hash = ShaderHash;
++	size = ShaderEntry.UncompressedSize;
++	const auto ShaderCodeView = MakeArrayView(ShaderCode, ShaderEntry.UncompressedSize);
++	return ShaderCodeView;
++}
++
+ TRefCountPtr<FRHIShader> FShaderCodeArchive::CreateShader(int32 Index)
+ {
+ 	LLM_SCOPE(ELLMTag::Shaders);
+diff --git a/Engine/Source/Runtime/RenderCore/Private/ShaderParameterMetadata.cpp b/Engine/Source/Runtime/RenderCore/Private/ShaderParameterMetadata.cpp
+index fa2a77530e1ef2..92f643a86ef057 100644
+--- a/Engine/Source/Runtime/RenderCore/Private/ShaderParameterMetadata.cpp
++++ b/Engine/Source/Runtime/RenderCore/Private/ShaderParameterMetadata.cpp
+@@ -485,6 +485,11 @@ void FShaderParametersMetadata::GetNestedStructs(TArray<const FShaderParametersM
+ 
+ void FShaderParametersMetadata::AddResourceTableEntries(TMap<FString, FResourceTableEntry>& ResourceTableMap, TMap<FString, uint32>& ResourceTableLayoutHashes, TMap<FString, FString>& UniformBufferStaticSlots) const
+ {
++	for (auto resTableMap : ResourceTableMap) {
++		UE_LOG(LogShaders, Log, TEXT("$$ AddResourceTableEntries key:%s ubuffName:%s"), *resTableMap.Key, *resTableMap.Value.UniformBufferName);
++		FFileHelper::SaveStringToFile(FString::Printf(TEXT("$$ AddResourceTableEntries key:%s ubuffName:%s"), *resTableMap.Key, *resTableMap.Value.UniformBufferName),
++			TEXT("/sdcard/ht.log"));
++	}
+ 	uint16 ResourceIndex = 0;
+ 	FString Prefix = FString::Printf(TEXT("%s_"), ShaderVariableName);
+ 	AddResourceTableEntriesRecursive(ShaderVariableName, *Prefix, ResourceIndex, ResourceTableMap);
+diff --git a/Engine/Source/Runtime/RenderCore/Private/ShaderParameterStruct.cpp b/Engine/Source/Runtime/RenderCore/Private/ShaderParameterStruct.cpp
+index 6e91831d404335..08aee116e7e5cf 100644
+--- a/Engine/Source/Runtime/RenderCore/Private/ShaderParameterStruct.cpp
++++ b/Engine/Source/Runtime/RenderCore/Private/ShaderParameterStruct.cpp
+@@ -37,6 +37,8 @@ struct FShaderParameterStructBindingContext
+ 		const TCHAR* MemberPrefix,
+ 		uint32 GeneralByteOffset)
+ 	{
++		UE_LOG(LogShaders, Log, TEXT("$$ ShaderarameterStruct::Bind memberPrefix:%s"), MemberPrefix);
++		FFileHelper::SaveStringToFile(FString::Printf(TEXT("$$ ShaderarameterStruct::Bind memberPrefix:%s"), MemberPrefix), TEXT("/sdcard/ht.log"));
+ 		const TArray<FShaderParametersMetadata::FMember>& StructMembers = StructMetaData.GetMembers();
+ 
+ 		for (const FShaderParametersMetadata::FMember& Member : StructMembers)
+@@ -155,6 +157,9 @@ struct FShaderParameterStructBindingContext
+ 					ElementShaderBindingName = ShaderBindingName;
+ 				}
+ 
++				UE_LOG(LogShaders, Log, TEXT("$$ ShaderarameterStruct::Bind ElementShaderBindingName:%s"), *ElementShaderBindingName);
++				FFileHelper::SaveStringToFile(FString::Printf(TEXT("$$ ShaderarameterStruct::Bind ElementShaderBindingName:%s"), *ElementShaderBindingName), TEXT("/sdcard/ht.log"));
++
+ 				if (ShaderGlobalScopeBindings.Contains(ElementShaderBindingName))
+ 				{
+ 					UE_LOG(LogShaders, Fatal, TEXT("%s can't bind shader parameter %s, because it has already be bound by %s."), *CppName, *ElementShaderBindingName, **ShaderGlobalScopeBindings.Find(ShaderBindingName));
+@@ -165,6 +170,8 @@ struct FShaderParameterStructBindingContext
+ 				{
+ 					continue;
+ 				}
++				UE_LOG(LogShaders, Log, TEXT("$$ ShaderarameterStruct::Bind bufferIndex:%i"), BufferIndex);
++				FFileHelper::SaveStringToFile(FString::Printf(TEXT("$$ ShaderarameterStruct::Bind bufferIndex:%i"), BufferIndex), TEXT("/sdcard/ht.log"));
+ 				ShaderGlobalScopeBindings.Add(ElementShaderBindingName, CppName);
+ 
+ 				if (bIsVariableNativeType)
+diff --git a/Engine/Source/Runtime/RenderCore/Public/ShaderCodeArchive.h b/Engine/Source/Runtime/RenderCore/Public/ShaderCodeArchive.h
+index 65220349ca25ae..ce9a46856cc838 100644
+--- a/Engine/Source/Runtime/RenderCore/Public/ShaderCodeArchive.h
++++ b/Engine/Source/Runtime/RenderCore/Public/ShaderCodeArchive.h
+@@ -190,6 +190,9 @@ public:
+ 	virtual void ReleasePreloadedShader(int32 ShaderIndex) override;
+ 
+ 	virtual TRefCountPtr<FRHIShader> CreateShader(int32 Index) override;
++
++	virtual TArrayView<const uint8> GetShaderCode(int32 index, int& size, FSHAHash& hash);
++
+ 	virtual void Teardown() override;
+ 
+ 	void OnShaderPreloadFinished(int32 ShaderIndex, const IMemoryReadStreamRef& PreloadData);
