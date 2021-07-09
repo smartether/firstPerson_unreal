@@ -63,6 +63,15 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
+
+					for (TActorIterator<AStaticMeshActor> it(GEngine->GetWorld()); it; ++it) {
+						if (it->GetFName() == TEXT("Cube")) {
+							auto staticMeshCom = Cast<UStaticMeshComponent>(it->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+							staticMeshCom->SetMaterial(0, mm);
+						}
+					}
+					
+
 					TArray<FMaterialParameterInfo> paramsInfo;
 					TArray<FGuid> paramsID;
 					mm->GetAllScalarParameterInfo(paramsInfo, paramsID); 
