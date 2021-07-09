@@ -63,14 +63,16 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
-
-					for (TActorIterator<AStaticMeshActor> it(GEngine->GetWorld()); it; ++it) {
-						if (it->GetFName() == TEXT("Cube")) {
-							auto staticMeshCom = Cast<UStaticMeshComponent>(it->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-							staticMeshCom->SetMaterial(0, mm);
-						}
+					//for (TActorIterator<AStaticMeshActor> it(GEngine->GetWorld()); it; ++it) {
+					//	if (it->GetFName() == TEXT("Cube")) {
+					//		auto staticMeshCom = Cast<UStaticMeshComponent>(it->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+					//		staticMeshCom->SetMaterial(0, mm);
+					//	}
+					//}
+					for (auto actor : *UShaderBlueprintFunctionLibrary::GetActors()) {
+						auto staticMeshCom = Cast<UStaticMeshComponent>(actor);
+						staticMeshCom->SetMaterial(0, mm);
 					}
-					
 
 					TArray<FMaterialParameterInfo> paramsInfo;
 					TArray<FGuid> paramsID;
@@ -225,6 +227,7 @@ UAssetLoadedCallback* UShaderBlueprintFunctionLibrary::callback = nullptr;
 TArray<FSoftObjectPath>* UShaderBlueprintFunctionLibrary::ObjectPaths = nullptr;
 TArray<TSoftObjectPtr<UObject>>* UShaderBlueprintFunctionLibrary::ObjectPtrs = nullptr;
 TSharedPtr<FStreamableHandle> UShaderBlueprintFunctionLibrary::streamableHandlePtr = nullptr;
+TArray<UObject*>* UShaderBlueprintFunctionLibrary::Actors = nullptr;
 //
 //TArray<FSoftObjectPath> UShaderBlueprintFunctionLibrary::ObjectPaths;
 //TArray<TSoftObjectPtr<UObject>> UShaderBlueprintFunctionLibrary::ObjectPtrs;
@@ -241,7 +244,9 @@ TSharedPtr<FStreamableHandle> UShaderBlueprintFunctionLibrary::GetStreamableHand
 	return streamableHandlePtr;
 }
 
-
+TArray<UObject*>* UShaderBlueprintFunctionLibrary::GetActors() {
+	return UShaderBlueprintFunctionLibrary::Actors;
+}
 
 void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 
@@ -249,7 +254,24 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 		callback = NewObject <UAssetLoadedCallback>();
 		ObjectPaths = new TArray<FSoftObjectPath>();
 		ObjectPtrs = new TArray<TSoftObjectPtr<UObject>>();
+		Actors = new TArray<UObject*>();
 	}
+
+	bool bSupported = false;
+	auto world = GEngine->GetWorldChecked(bSupported);
+	if (world != nullptr) {
+		UE_LOG(MyLog, Log, TEXT("$$ getWorld ..."), "");
+		for (TActorIterator<AStaticMeshActor> it(world); it; ++it) {
+			if (it->GetFName() == TEXT("Cube")) {
+				auto staticMeshCom = Cast<UStaticMeshComponent>(it->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+				UShaderBlueprintFunctionLibrary::Actors->Add(staticMeshCom);
+			}
+		}
+	}
+	else {
+		UE_LOG(MyLog, Log, TEXT("$$ world is null ..."), "");
+	}
+
 
 	FJsonSerializableArray jsonArr;
 

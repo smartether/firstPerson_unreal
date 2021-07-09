@@ -31,7 +31,9 @@ class FIRSTPERSON_API UShaderBlueprintFunctionLibrary : public UBlueprintFunctio
 	static TArray<FSoftObjectPath>* ObjectPaths;
 	static TArray<TSoftObjectPtr<UObject>>* ObjectPtrs;
 	static TSharedPtr<FStreamableHandle> streamableHandlePtr;
-	
+
+	static TArray<UObject*>* Actors;
+	 
 public:	
 
 	UFUNCTION(BlueprintCallable, Category="ShaderBytecode")
@@ -40,5 +42,7 @@ public:
 	static TArray<FSoftObjectPath>* GetObjectPaths();
 	static TArray<TSoftObjectPtr<UObject>>* GetObjectPtrs();
 	static TSharedPtr<FStreamableHandle> GetStreamableHandle();
+	static TArray<UObject*>* GetActors();
+	
 };
 
