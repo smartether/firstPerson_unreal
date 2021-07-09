@@ -249,7 +249,11 @@ TArray<UObject*>* UShaderBlueprintFunctionLibrary::GetActors() {
 }
 
 void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
+	if (Actors != nullptr && Actors->Num() > 0) {
+		return;
+	}
 
+	UE_LOG(MyLog, Log, TEXT("$$ c++ PrintShaderPath"));
 	if (callback == nullptr) {
 		callback = NewObject <UAssetLoadedCallback>();
 		ObjectPaths = new TArray<FSoftObjectPath>();
@@ -257,8 +261,11 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 		Actors = new TArray<UObject*>();
 	}
 
-	bool bSupported = false;
-	auto world = GEngine->GetWorldChecked(bSupported);
+	
+	auto world = GEngine->GetCurrentPlayWorld();
+	if (world == nullptr) {
+		UE_LOG(MyLog, Log, TEXT("$$GetCurrentPlayWorld world is null ..."), "");
+	}
 	if (world != nullptr) {
 		UE_LOG(MyLog, Log, TEXT("$$ getWorld ..."), "");
 		for (TActorIterator<AStaticMeshActor> it(world); it; ++it) {
@@ -270,6 +277,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	}
 	else {
 		UE_LOG(MyLog, Log, TEXT("$$ world is null ..."), "");
+		return;
 	}
 
 
