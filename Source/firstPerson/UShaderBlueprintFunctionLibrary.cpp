@@ -63,15 +63,14 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
 				if (mm != nullptr) {
-					//for (TActorIterator<AStaticMeshActor> it(GEngine->GetWorld()); it; ++it) {
-					//	if (it->GetFName() == TEXT("Cube")) {
-					//		auto staticMeshCom = Cast<UStaticMeshComponent>(it->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-					//		staticMeshCom->SetMaterial(0, mm);
-					//	}
-					//}
 					for (auto actor : *UShaderBlueprintFunctionLibrary::GetActors()) {
+						
 						auto staticMeshCom = Cast<UStaticMeshComponent>(actor);
 						staticMeshCom->SetMaterial(0, mm);
+						if (staticMeshCom->OverrideMaterials.Num() > 1) {
+							staticMeshCom->OverrideMaterials[0] = mm;
+						}
+						UE_LOG(MyLog, Log, TEXT("$$ set actor %s material"), *actor->GetFName().ToString());
 					}
 
 					TArray<FMaterialParameterInfo> paramsInfo;
@@ -196,21 +195,6 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 						
 					}
 					
-					//auto shaderSrc = (FString*)(shaderMap->GetShaderSource(TEXT("FMaterialShaderType")));
-					//UE_LOG(MyLog, Log, TEXT("$$ shaderSrc:\n %s"), *shaderSrc);
-
-					/*
-					auto shader = matRes->GetGameThreadShaderMap()->GetShader(0);
-					UE_LOG(MyLog, Log, TEXT("$$ step2"), "");
-					auto shaderRes = FShaderCodeLibrary::LoadResource(shader->GetHash(), nullptr);
-					UE_LOG(MyLog, Log, TEXT("$$ step3"), "");
-					auto shaderFRHI = shaderRes->GetShader(shader->GetResourceIndex());
-					UE_LOG(MyLog, Log, TEXT("$$ step4"), "");
-					auto shaderRHI = FShaderCodeLibrary::CreateVertexShader(EShaderPlatform::SP_OPENGL_ES3_1_ANDROID, shader->GetHash());
-					UE_LOG(MyLog, Log, TEXT("$$ step5"), "");
-					UE_LOG(MyLog, Log, TEXT("$$ shaderHash:%s  shaderNameRHI:%s shaderNameFRHI:%s"), *(shader->GetHash().ToString()), shaderRHI->GetShaderName(), shaderFRHI->GetShaderName());
-					UE_LOG(MyLog, Log, TEXT("$$ step6"), "");
-					*/
 				}
 			}
 		}
@@ -262,16 +246,18 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	}
 
 	
-	auto world = GEngine->GetCurrentPlayWorld();
+	auto world = GEngine->GetCurrentPlayWorld();   
 	if (world == nullptr) {
 		UE_LOG(MyLog, Log, TEXT("$$GetCurrentPlayWorld world is null ..."), "");
 	}
 	if (world != nullptr) {
 		UE_LOG(MyLog, Log, TEXT("$$ getWorld ..."), "");
 		for (TActorIterator<AStaticMeshActor> it(world); it; ++it) {
-			if (it->GetFName() == TEXT("Cube")) {
+			UE_LOG(MyLog, Log, TEXT("$$ find object %s ..."), *it->GetFName().ToString());
+			if (it->GetFName().ToString().StartsWith(TEXT("Cube"))) {
 				auto staticMeshCom = Cast<UStaticMeshComponent>(it->GetComponentByClass(UStaticMeshComponent::StaticClass()));
 				UShaderBlueprintFunctionLibrary::Actors->Add(staticMeshCom);
+				UE_LOG(MyLog, Log, TEXT("$$ add act:%s"), *it->GetFName().ToString());
 			}
 		}
 	}
@@ -310,7 +296,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 	
 	if (pak->IsValid()) {
 		UE_LOG(MyLog, Log, TEXT("$$ load pak success."), "");
-		pakPlatformFile->Mount(*pakFileName, 1000, *MountRoot);
+		//pakPlatformFile->Mount(*pakFileName, 1000, *MountRoot);
 		auto engineContentFolder = pak->GetMountPoint() + TEXT("Engine/Content/");
 		UE_LOG(MyLog, Log, TEXT("$$ engineContentFolder:%s"), *engineContentFolder);
 		FPackageName::RegisterMountPoint("/Engine/", engineContentFolder);
@@ -384,60 +370,8 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 			FStreamableManager& streamableMgr = UAssetManager::GetStreamableManager();
 			streamableHandlePtr = streamableMgr.RequestAsyncLoad(*UShaderBlueprintFunctionLibrary::ObjectPaths, FStreamableDelegate::CreateUObject(callback, &UAssetLoadedCallback::OnCreateAllChildren));
 
-
-			auto loadObj = streamableMgr.LoadSynchronous<UObject>((*UShaderBlueprintFunctionLibrary::ObjectPaths)[1]);
-			if (loadObj != nullptr) {
-				UE_LOG(MyLog, Log, TEXT("$$ load obj[0] %s "), *(loadObj->GetFName().ToString()));
-			}
-			else {
-				UE_LOG(MyLog, Log, TEXT("$$ load obj[0] failed."), "");
-			}
-
 		}
-		/*
-		TArray<FString> paths;
-		paths.Add("/Hotta/Content/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline");
-		paths.Add("Hotta/Content/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline");
-		paths.Add("/Content/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline");
-		paths.Add("Content/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline");
-		paths.Add("/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline");
-		paths.Add("Resources/CoreMaterials/MasterMaterials/MM_Unique_spline");
-
-		UMaterial* testMat = nullptr;
-		for (auto path : paths) {
-			FPakEntry entry;
-			if (FPakFile::EFindResult::Found == pak->Find(path, &entry)) {
-				UE_LOG(MyLog, Log, TEXT("$$ find file:%s"), *path);
-			}
-			
-			testMat = LoadObject<UMaterial>(nullptr, *path);
-			if (testMat == nullptr) {
-				UE_LOG(MyLog, Log, TEXT("$$ material is null   %s"), *path);
-				path.Append(".uasset");
-				
-				testMat = LoadObject<UMaterial>(nullptr, *path);
-				if (testMat == nullptr) {
-					UE_LOG(MyLog, Log, TEXT("$$ material is null   %s"), *path);
-				}
-				else {
-					UE_LOG(MyLog, Log, TEXT("$$ material is loaded   %s"), *path);
-				}
-			}
-			else {
-				UE_LOG(MyLog, Log, TEXT("$$ material is loaded   %s"), *path);
-			}
-		}
-
-
-		if (testMat != nullptr) {
-			UE_LOG(MyLog, Log, TEXT("$$ material loaded."), "");
-			auto matRes = testMat->GetMaterialResource(ERHIFeatureLevel::ES3_1);
-			//FVertexFactoryType vertexFactoryType();
-			//auto shader = matRes->GetShader(&vertexFactoryType, 0, true);
-			//auto meta = shader->GetRootParametersMetadata()->GetNameStructMap().Find(FHashedName(TEXT("")));
-			
-		}
-		*/
+ 
 	}
 
 	FJsonSerializableArray jsonSeriArr;
@@ -451,16 +385,7 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 			UE_LOG(MyLog, Log, TEXT("$$ shader path:%s"), *pathStr);
 		}
 	}
-	//LoadShaderSourceFileChecked()
-	/*
-	bool rootFolder = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), TEXT(""));
-	bool bFileFolder = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), TEXT("firstPerson"));
-	bool bContentFolder = FShaderCodeLibrary::OpenLibrary(TEXT("Hotta"), FString(TEXT("Game")).Append("/").Append(TEXT("Content")));
-	
-	UE_LOG(MyLog, Log, TEXT("%s"), (rootFolder ? TEXT("$$ load hotta shader from rootFolder") : TEXT("$$ couldn't load hotta shader from rootFolder")));
-	UE_LOG(MyLog, Log, TEXT("%s"), (bFileFolder ? TEXT("$$ load hotta shader from FileFolder") : TEXT("$$ couldn't load hotta shader from FileFolder")));
-	UE_LOG(MyLog, Log, TEXT("%s"), (bContentFolder ? TEXT("$$ load hotta shader from ContentFolder") : TEXT("$$ couldn't load hotta shader from ContentFolder")));
-	*/
+ 
 	GetAllVirtualShaderSourcePaths(jsonSeriArr, EShaderPlatform::SP_OPENGL_PCES3_1);
 	UE_LOG(MyLog, Log, TEXT("$$ shader source path count: %i"), jsonSeriArr.Num());
 
@@ -494,25 +419,9 @@ void UShaderBlueprintFunctionLibrary::PrintShaderPath() {
 
 	auto projConDir = FPaths::ProjectContentDir();
 	UE_LOG(MyLog, Log, TEXT("$$ ProjectContentDir:%s"), *projConDir);
-	auto shaderWorkDir = FPaths::ShaderWorkingDir();
+	auto shaderWorkDir = FPaths::ShaderWorkingDir();  
 	UE_LOG(MyLog, Log, TEXT("$$ ShaderWorkingDir:%s"), *shaderWorkDir);
-	/*
-	auto mat = LoadObject<UObject>(nullptr, TEXT("Content/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline"));
-	if (mat == nullptr) {
-		UE_LOG(MyLog, Log, TEXT("$$ load mat from content failed"), "");
-		mat = LoadObject<UObject>(nullptr, TEXT("/Hotta/Content/Resources/CoreMaterials/MasterMaterials/MM_Unique_spline"));
-		if (mat == nullptr) {
-			UE_LOG(MyLog, Log, TEXT("$$ load mat from game failed"), "");
-		}
-		else {
-			UE_LOG(MyLog, Log, TEXT("$$ load mat from  game success"), "");
-		}
-	}
-	else {
-		UE_LOG(MyLog, Log, TEXT("$$ load mat from content success "), "");
-	}
-	*/
-
+ 
 
 	FJsonSerializableArray mountedPak;
 	pakPlatformFile->GetMountedPakFilenames(mountedPak);
