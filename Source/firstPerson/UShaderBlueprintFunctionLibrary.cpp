@@ -62,11 +62,12 @@ void UAssetLoadedCallback::OnCreateAllChildren() {
 			UE_LOG(MyLog, Log, TEXT("$$ object loaded: %s"), *(objectPtr->GetFName().ToString()));
 			if (objectPtr->GetFName() == TEXT("MM_Hotta_ToonUnlit")) {
 				UMaterial* mm = reinterpret_cast<UMaterial*>(objectPtr);
-				if (mm != nullptr) {
+				if (mm != nullptr) {  
 					for (auto actor : *UShaderBlueprintFunctionLibrary::GetActors()) {
 						
 						auto staticMeshCom = Cast<UStaticMeshComponent>(actor);
 						staticMeshCom->SetMaterial(0, mm);
+						staticMeshCom->Activate(true);
 						if (staticMeshCom->OverrideMaterials.Num() > 1) {
 							staticMeshCom->OverrideMaterials[0] = mm;
 						}
